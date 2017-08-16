@@ -10,7 +10,8 @@
             $functions = $soapClient->__getFunctions();
 
             $nl="\n";
-
+            $tab1 = '    ';
+            $tab2 = $tab1.$tab1;
 
             $code ='';
             $simpletypes = array('string','int','double','dateTime','float');
@@ -33,19 +34,19 @@
                 $p1 = '$' . $params[0];
 
 
-                $code .= $nl .'function ' . $func . '(' . $p1 .')'
-                . "{$nl}{\n";
+                $code .= $nl . $tab1 . 'function ' . $func . '(' . $p1 .')'
+                . "{$nl}{$tab1}{";
                 if ($temp[0] == 'void')
-                    $code .=  $nl ."\$this->soapClient->$func({$p1});{$nl}}";
+                    $code .= $nl . $tab2 . "\$this->soapClient->$func({$p1});{$nl}{$tab1}}";
                 else
                 {
-                    $code .=  $nl . '$' . $temp[0] . ' = ' .  "\$this->soapClient->$func({$p1});";
-                    $code .= $nl ."return \${$temp[0]};\n{$nl}}";
+                    $code .= $nl . $tab2 . '$' . $temp[0] . ' = ' .  "\$this->soapClient->$func({$p1});";
+                    $code .= $nl . $tab2 . "return \${$temp[0]};{$nl}{$tab1}}";
                 }
 
 
             }
-            $code .= "}\n{$nl}";
+            $code .= "{$nl}}{$nl}";
 
 
             //    print_r($functions);
@@ -71,7 +72,7 @@
                         $member = trim($member);
                         if (strlen($member)< 1) continue;
                         list($data_type,$member_name) = explode(' ' , $member);
-                        $codeType .= "{$nl}    var \${$member_name};//{$data_type}";
+                        $codeType .= "{$nl}{$tab1}var \${$member_name};//{$data_type}";
                     }
 
                     $codeType .= $nl . '}';
@@ -79,29 +80,29 @@
                 }
             }
 
-            $mapstr = "\n" . 'private static $classmap = array(';
+            $mapstr = $nl . $tab1 . 'private static $classmap = array(';
             $classMAPCode = array();
             foreach($classesArr as $cname)
             {
                 // $mapstr .= "\n,'$cname'=>'$cname'";
-                $classMAPCode[] = "\n    '$cname' => '$cname'";
+                $classMAPCode[] = "{$nl}{$tab2}'$cname' => '$cname'";
             }
             //print_r($classMAPCode);
             $mapstr .= implode (',',$classMAPCode);
-            $mapstr .= "\n);";
+            $mapstr .= "{$nl}{$tab1});";
 
             $fullcode = <<< EOT
 <?php
 $codeType
-class $sname $nl {
- var \$soapClient;
- $mapstr
+class $sname $nl{
+    var \$soapClient;
+    $mapstr
 
- function __construct(\$url='{$url}')
- {
-  \$this->soapClient = new SoapClient(\$url,array("classmap" => self::\$classmap,"trace" => true,"exceptions" => true));
- }
- $code
+    function __construct(\$url='{$url}')
+    {
+        \$this->soapClient = new SoapClient(\$url,array("classmap" => self::\$classmap,"trace" => true,"exceptions" => true));
+    }
+    $code
 ?>
 EOT;
 
