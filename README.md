@@ -3,7 +3,7 @@
 解决过于复杂的webservice参数结构，导致php调用不成功
 
 ### demo
-<br>[演示地址](http://www.kuu.ren/tools/wsdl2php/wsdl2php.php)
+[演示地址](http://www.kuu.ren/tools/wsdl2php/wsdl2php.php)
 <br>效果如下图：<br>
 ![demo](demo.png)
 
