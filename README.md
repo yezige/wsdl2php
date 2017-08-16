@@ -1,5 +1,6 @@
 # wsdl2php
-输入wsdl的链接，可以生成php调用webservice的类文件，解决复杂的webservice参数结构，php无法调用
+输入wsdl的链接，可以生成php调用webservice的类文件
+解决过于复杂的webservice参数结构，导致php调用不成功
 
 ### demo
 ![demo](demo.png)
