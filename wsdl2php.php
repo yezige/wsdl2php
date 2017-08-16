@@ -18,7 +18,7 @@ else
 }
 ?>
 <h2>Easy WSDL2PHP Generator</h2>
-<p> ej. http://soap.amazon.com/schemas2/AmazonWebServices.wsdl</p>
+<p> ej. http://www.kuu.ren/tools/wsdl2php/AmazonWebServices.wsdl</p>
 
 <form action="wsdl2php.php" method="post">
 <p>Url: <input type="text" name="url" size="60" value="<?=$url?>" /></p>
@@ -32,7 +32,7 @@ else
 <textarea rows="10" cols="80" name="code">
 
 <?
-include 'EasyWsdl2PHP.php';
+include dirname(__FILE__).'/EasyWsdl2PHP.php';
 echo EasyWsdl2PHP::generate(trim($url),$sname);
 ?>
 </textarea>
